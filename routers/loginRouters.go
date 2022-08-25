@@ -1,9 +1,11 @@
 package routers
 
 // 登录页面的路由设计
-import(
-	"github.com/gin-gonic/gin"
+import (
 	"NewTodo/controller"
+	"NewTodo/middlewares"
+
+	"github.com/gin-gonic/gin"
 )
 
 func SetLoginRouter(r *gin.Engine ){
@@ -12,7 +14,7 @@ func SetLoginRouter(r *gin.Engine ){
 	{
 		LoginRouterGroup.GET("/", DefaultRouter)
 
-		LoginRouterGroup.POST("/", controller.LoginRegister)
+		LoginRouterGroup.POST("/", controller.LoginRegister, middlewares.SetSessions)
 
 	}
 

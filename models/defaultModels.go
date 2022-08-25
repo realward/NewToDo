@@ -1,29 +1,30 @@
 package models
 
 type User struct {
-	Username string 	`json:"registerName" form:"registerName"`
-	Password string 	`json:"registerPassword" form:"registerPassword"`
-	Email string 		`json:"registerEmail" form:"registerEmail"`
-	Phonenumber string 	`json:"registerPhoneNumber" form:"registerPhoneNumber" gorm:"primaryKey"`
-	Todos []Todo 		`gorm:"ForeignKey:Fid;AssociationForeignKey:Phonenumber"`
+	Username string 	`json:"registerName" form:"registerName" gorm:"column:username"`
+	Password string 	`json:"registerPassword" form:"registerPassword" gorm:"column:password"`
+	Email string 		`json:"registerEmail" form:"registerEmail" gorm:"column:email"`
+	Phonenumber string 	`json:"registerPhoneNumber" form:"registerPhoneNumber" gorm:"primaryKey;column:phonenumber"`
+	Status bool  	   	`json:"status" form:"status" gorm:"column:status"`
+	Todos []Todo 		`gorm:"ForeignKey:Uuid;AssociationForeignKey:Phonenumber;"`
 }
 
 
 type Todo struct {
-	Id     int    `json:"id" form:"id"`
-	Title  string `json:"title" form:"title"`
-	Status bool   `json:"status" form:"status"`
-	Phonenumber string `json:"phonenumber" form:"phonenumber"`
+	Id     int    `json:"id" form:"id" gorm:"column:id"`
+	Title  string `json:"title" form:"title" gorm:"column:title"`
+	Status bool   `json:"status" form:"status" gorm:"column:status"`
+	Uuid string `json:"Uuid" form:"Uuid" gorm:"column:Uuid;size:255"`
 }
 
 func (u User) TableName() string {
 
-	return "Users"
+	return "users"
 
 }
 
 func (t Todo) TableName() string {
 
-	return "Todos"
+	return "todos"
 
 }

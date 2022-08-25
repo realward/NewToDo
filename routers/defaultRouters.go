@@ -3,6 +3,7 @@ package routers
 import(
 	"github.com/gin-gonic/gin"
 	"net/http"
+	"NewTodo/middlewares"
 )
 
 
@@ -19,6 +20,8 @@ func RoutersInit() * gin.Engine{
 	r.LoadHTMLGlob("templates/*") //加载所有模版
 	
 	r.Static("../statics", "./statics")  //替换静态文件导入路径
+
+	middlewares.DefaultSessions(r)
 
 	r.GET("/", DefaultRouter)
 

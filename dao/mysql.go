@@ -11,7 +11,7 @@ var (
 
 	DB *gorm.DB
 
-	Token string = "s%:s%@tcp(s%:d%)/s%?charset=utf8mb4&parseTime=True&loc=Local"
+	Token string = "%v:%v@tcp(%v:%v)/%v?charset=utf8mb4&parseTime=True&loc=Local"
 
 )
 

@@ -1,9 +1,10 @@
 package main
 
 import (
+	"NewTodo/dao"
+	"NewTodo/models"
 	"NewTodo/routers"
 	"NewTodo/setting"
-	"NewTodo/dao"
 	"fmt"
 	_ "log"
 
@@ -38,7 +39,8 @@ func main(){
 	defer dao.Close()
 
 	// 模型绑定dao.DB.AutoMigrate(&models.Todo{})
-
+	dao.DB.AutoMigrate(&models.User{},&models.Todo{},)
+	
 	r := routers.RoutersInit()
 
 	routers.SetRouters(r)

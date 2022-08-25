@@ -11,7 +11,7 @@ func SetIndexRouter(r *gin.Engine) {
 
 	IndexRouterGrout := r.Group("/index")
 	{
-		// IndexRouterGrout.GET("/", nil)
+		IndexRouterGrout.GET("/", controller.Index)
 
 		IndexRouterGrout.POST("/", controller.EnterTodo)
 	}
