@@ -17,33 +17,32 @@ func DefaultSessions(r * gin.Engine){
 
 }//注册全局session
 
-func SetSessions(c *gin.Context) {
-	fmt.Println("SetSessions start")
-	userInfo, ok := c.Get("userinfo")
+func SetSessions() gin.HandlerFunc  {
 
-	fmt.Println(userInfo)
-	if !ok{
-		//日志记录
-		c.JSON(http.StatusOK, gin.H{
-			"status": "获取用户信息失败",
-		})
-		return
-	}
-	session := sessions.Default(c)
+	return func(c  *gin.Context){
+		
+		userInfo, ok := c.Get("userinfo")
 
-	userinfo, _ :=json.Marshal(userInfo)
+		fmt.Println(userInfo)
+		if !ok{
+			//日志记录
+			c.JSON(http.StatusOK, gin.H{
+				"status": "获取用户信息失败",
+			})
+			return
+		}
+		session := sessions.Default(c)
 
-	session.Set("userinfo",string(userinfo))
+		userinfo, _ := json.Marshal(userInfo) //结构体编码为二进制的json数据流
 
-	err := session.Save()
+		session.Set("userinfo",string(userinfo)) //session保存的k-v值中的v只能是字符串类型
 
-	if err == nil{
-		// c.JSON(http.StatusOK, gin.H{
-		// 	"status": "session successfully",
-		// })
-	}else {
-		// c.JSON(http.StatusOK, gin.H{
-		// 	"status": "session failed",
-		// })
+		err := session.Save() //必须通过save来使set生效
+
+		if err != nil{
+			c.JSON(http.StatusOK, gin.H{
+				"status": "session failed",
+			})
+		}
 	}
 }

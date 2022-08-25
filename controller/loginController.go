@@ -3,7 +3,7 @@ package controller
 //登录控制器层，验证提交的数据。
 import (
 	"NewTodo/models"
-	"fmt"
+	
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -11,7 +11,7 @@ import (
 
 func LoginRegister(c *gin.Context) {
 
-	tag := c.PostForm("tag")
+	tag := c.PostForm("tag")	//通过判断发送的post请求中，type为hidden的<input>标签中，tag项对应的值，来区分post请求是login还是register
 
 	if tag == "login" {
 
@@ -26,9 +26,9 @@ func LoginRegister(c *gin.Context) {
 
 func Login(c *gin.Context) {
 	// 1.数据库查询该账户是否已经注册
-	LoginName := c.PostForm("loginUsername")
+	LoginName := c.PostForm("loginUsername") //前端提交的表单中name=loginUsername所对应的填写值
 
-	LoginPassword := c.PostForm("loginPassword")
+	LoginPassword := c.PostForm("loginPassword")//前端提交的表单中name=loginPassword所对应的填写值
 
 	var userInfo *models.User
 
@@ -59,10 +59,11 @@ func Login(c *gin.Context) {
 	if userInfo.Password == LoginPassword {
 
 		c.Set("userinfo", userInfo)
-		fmt.Println(userInfo)
+		
 		c.Next() //执行新建session中间件
 
-		c.Redirect(http.StatusMovedPermanently, "/index")//登录
+		c.Redirect(http.StatusMovedPermanently, "/index")//完成登录，进入index页面
+		
 	}else{
 
 		c.JSON(http.StatusUnauthorized, gin.H{

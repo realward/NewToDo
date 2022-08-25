@@ -9,7 +9,7 @@ import(
 
 func DefaultRouter(c *gin.Context) {
 
-	c.HTML(http.StatusOK, "login.html", nil)
+	c.HTML(http.StatusOK, "login.html", nil) //渲染默认的初始化login.html页面
 
 }
 
@@ -21,7 +21,7 @@ func RoutersInit() * gin.Engine{
 	
 	r.Static("../statics", "./statics")  //替换静态文件导入路径
 
-	middlewares.DefaultSessions(r)
+	middlewares.DefaultSessions(r) //cookie实现session的初始化
 
 	r.GET("/", DefaultRouter)
 
@@ -30,9 +30,9 @@ func RoutersInit() * gin.Engine{
 
 func SetRouters(r * gin.Engine){
 
-	SetLoginRouter(r)
+	SetLoginRouter(r) //设置login页面相关路由
 
-	SetIndexRouter(r)
+	SetIndexRouter(r) //设置index页面相关路由
 
-	SetTodoRouter(r)
+	SetTodoRouter(r)  //设置todo页面相关路由
 }

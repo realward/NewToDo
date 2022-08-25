@@ -12,9 +12,9 @@ func SetLoginRouter(r *gin.Engine ){
 
 	LoginRouterGroup := r.Group("/login")
 	{
-		LoginRouterGroup.GET("/", DefaultRouter)
+		LoginRouterGroup.GET("/", DefaultRouter) // 设置/login/的GET请求路由
 
-		LoginRouterGroup.POST("/", controller.LoginRegister, middlewares.SetSessions)
+		LoginRouterGroup.POST("/", controller.LoginRegister, middlewares.SetSessions())//设置/login/的post请求路由
 
 	}
 
