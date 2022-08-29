@@ -3,6 +3,9 @@ package controller
 //登录控制器层，验证提交的数据。
 import (
 	"NewTodo/models"
+	"NewTodo/utils"
+
+	_ "fmt"
 
 	"net/http"
 
@@ -28,7 +31,7 @@ func Login(c *gin.Context) {
 	// 1.数据库查询该账户是否已经注册
 	LoginName := c.PostForm("loginUsername") //前端提交的表单中name=loginUsername所对应的填写值
 
-	LoginPassword := c.PostForm("loginPassword") //前端提交的表单中name=loginPassword所对应的填写值
+	LoginPassword :=  utils.Md5(c.PostForm("loginPassword")) //前端提交的表单中name=loginPassword所对应的填写值
 
 	var userInfo *models.User
 
@@ -84,14 +87,14 @@ func Register(c *gin.Context) {
 	registerPhoneNumber := c.PostForm("registerPhoneNumber")
 	// 1.注册的信息是否合法
 
-	if !models.FilterEmail(registerEmail){
+	if !utils.FilterEmail(registerEmail){
 		c.JSON(http.StatusUnauthorized, gin.H{
 			"status": "邮箱不合法",
 		})		
 		c.Redirect(http.StatusMovedPermanently, "/") 
 		return
 	}
-	if !models.FilterPhonenumber(registerPhoneNumber){
+	if !utils.FilterPhonenumber(registerPhoneNumber){
 		c.JSON(http.StatusUnauthorized, gin.H{
 			"status": "电话号码不合法",
 		})		
@@ -100,7 +103,7 @@ func Register(c *gin.Context) {
 	}
 	
 	// 2.数据库查询该账户是否已经注册
-	registerPassword := models.Md5(c.PostForm("registerPassword"))
+	registerPassword := utils.Md5(c.PostForm("registerPassword"))
 	
 	user := &models.User{
 		Username : c.PostForm("registerName"),
@@ -110,30 +113,39 @@ func Register(c *gin.Context) {
 		Status: true,
 	}
 
-	var userInfo *models.User
+	// var userInfo *models.User
 
 	var err error
 
-	if userInfo, err = models.GetAUserByRegisterInfo(user); err == nil{
+	if _, err = models.GetAUserByRegisterInfo(user); err == nil{
 
 		c.JSON(http.StatusUnauthorized, gin.H{
 			"status": "用户存在",
 		})
 
-		c.Redirect(http.StatusMovedPermanently, "/") 
+		c.Redirect(http.StatusMovedPermanently, "/")
+
+		c.Abort()
+
 		return
 	}
-
-	if err = models.CreatAUser(userInfo); err != nil {
-
+	
+	
+	if err = models.CreatAUser(user); err != nil {
+		
 		c.JSON(http.StatusUnauthorized, gin.H{
 			"status": "用户创建失败",
 		})
 		c.Redirect(http.StatusMovedPermanently, "/") 
+
+		c.Abort()
+
 		return
 	}
 	// 3.回到登陆页面
 
 	c.Redirect(http.StatusMovedPermanently, "/") 
+
+	c.Abort()
 
 }

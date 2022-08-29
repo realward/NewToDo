@@ -14,7 +14,7 @@ type Todo struct {
 	Id     int    `json:"id" form:"id" gorm:"column:id"`
 	Title  string `json:"title" form:"title" gorm:"column:title"`
 	Status bool   `json:"status" form:"status" gorm:"column:status"`
-	Uuid string `json:"Uuid" form:"Uuid" gorm:"column:Uuid;size:255"`
+	Uuid string   `json:"Uuid" form:"Uuid" gorm:"column:Uuid;size:255"`
 }
 
 func (u User) TableName() string {
