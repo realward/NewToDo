@@ -14,11 +14,12 @@ func CreatATodo(todo *Todo)(err error){
 	return
 }
 
-func GetAllTodo()(todolist []*Todo, err error){
+func GetAllTodo(Fid string)(todolist []*Todo, err error){
 
-	if err = dao.DB.Find(&todolist).Error; err!= nil{
+	if err = dao.DB.Debug().Where("Uuid=?", Fid).Find(&todolist).Error;err != nil{
 		return nil, err
 	}
+
 	return todolist, err
 }
 	
@@ -26,10 +27,9 @@ func GetATodoByID(id string)(todo *Todo, err error){
 
 	todo = new(Todo)
 	if err = dao.DB.Where("id=?", id).First(todo).Error; err != nil {
+		
 		return nil, err		
-		// c.JSON(http.StatusOK, gin.H{
-		// 	"error": err.Error(),
-		// })
+
 	}
 	return 
 }

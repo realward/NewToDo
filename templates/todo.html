@@ -19,6 +19,7 @@
 
 <body><noscript><strong>We're sorry but dsb doesn't work properly without JavaScript enabled. Please enable it to
             continue.</strong></noscript>
+
     <canvas></canvas>
     <style>
         html,
@@ -62,13 +63,25 @@
         .codrops-demos a.current-demo {
             border-color: #383a3c;
         }
+        
+        .containerBox {
+            position: absolute;
+            margin-left: 48%;
+            /* width: 50%;
+            height: 50%; */
+            z-index: 9999;
+        }
     </style>
 
     <div id=app></div>
     <script src=../statics/todo/js/chunk-vendors.ddcb6f91.js></script>
     <script src=../statics/todo/js/app.007f9690.js></script>
 
-
+    <div class="containerBox">
+        <form action="/todo" method="post">
+            <input type="submit" class="btn" value="登出" style="width:80px;height:40px;font-size:20px;">
+        </form>
+    </div>
     <script src=../statics/login/js/jquery-1.12.3.min.js></script>
     <script>
         $(function() {

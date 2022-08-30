@@ -13,7 +13,7 @@ func DefaultSessions(r * gin.Engine){
 
 	store := cookie.NewStore([]byte("secret")) //cookie实现，后面改成redis
 
-	r.Use(sessions.Sessions("sessionId", store))
+	r.Use(sessions.Sessions("mysession", store))
 
 }//注册全局session
 
@@ -44,5 +44,27 @@ func SetSessions() gin.HandlerFunc  {
 				"status": "session failed",
 			})
 		}
+	}
+}
+
+func AuthSession() gin.HandlerFunc{
+	return func(c *gin.Context) {
+
+		session := sessions.Default(c)
+	
+		if session.Get("userinfo") == nil{
+	
+			c.JSON(http.StatusUnauthorized, gin.H{
+				"status": "账户信息session不存在",
+			})
+	
+			c.Redirect(http.StatusMovedPermanently, "/")
+
+			c.Abort()
+	
+			return
+		}
+
+		c.Next()
 	}
 }

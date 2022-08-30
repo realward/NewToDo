@@ -2,18 +2,22 @@ package routers
 
 //导航页面的路由设计
 import(
-	"github.com/gin-gonic/gin"
 	"NewTodo/controller"
+	"NewTodo/middlewares"
+
+	"github.com/gin-gonic/gin"
 )
 
 
 func SetIndexRouter(r *gin.Engine) {
 
-	IndexRouterGrout := r.Group("/index")
-	{
-		IndexRouterGrout.GET("/", controller.Index)
+	IndexRouterGroup := r.Group("/index")
 
-		IndexRouterGrout.POST("/", controller.EnterTodo)
+	IndexRouterGroup.Use(middlewares.AuthSession())
+	{
+		IndexRouterGroup.GET("/", controller.Index)
+
+		IndexRouterGroup.POST("/", controller.EnterTodo)
 	}
 
 }

@@ -63,10 +63,12 @@
             </style>
 
             <body>
-                <!-- <p><a href='todo.html' class="todo-color">个人清单</a></p> -->
-                <form action="/todo" method="get">
-                    <input type="button" value="个人清单" />
-                </form>
+                <!-- <p><a href='todo.html' class="todo-color">{{.name}}的个人清单</a></p> -->
+                <div class="container">
+                    <form action="/index" method="post">
+                        <input type="submit" class="btn" value="个人清单" style="width:300px;height:60px;font-size:40px;color: rgb(15, 89, 159);font-style:normal;">
+                    </form>
+                </div>
             </body>
 
             <p>I'm <span class="typed" data-typed-items="Recoder, Finisher"></span></p>

@@ -4,7 +4,7 @@ package controller
 
 import (
 	"NewTodo/models"
-	"fmt"
+	_"fmt"
 	"net/http"
 	"encoding/json"
 
@@ -16,23 +16,12 @@ func Index(c *gin.Context){
 
 	session := sessions.Default(c)
 
-	var userInfo string
+	userInfo := session.Get("userinfo").(string)
 
-	if session.Get("userinfo") == nil{
-
-		c.JSON(http.StatusUnauthorized, gin.H{
-			"status": "账户信息不存在",
-		})
-
-		c.Redirect(http.StatusMovedPermanently, "/")
-
-		return
-	}
-	userInfo = session.Get("userinfo").(string)
-	fmt.Println(userInfo)
 	userStruct := models.User{}
+	
 	json.Unmarshal([]byte(userInfo), &userStruct)
-	fmt.Println(userStruct)
+
 	c.HTML(http.StatusOK,"index.html",gin.H{
 		"name":userStruct.Username,
 	})
@@ -41,5 +30,5 @@ func Index(c *gin.Context){
 
 func EnterTodo(c *gin.Context){
 
-
+	c.Redirect(http.StatusMovedPermanently, "/todo")
 }
