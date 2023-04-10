@@ -37,26 +37,36 @@ func Login(c *gin.Context) {
 
 	var err error
 
-	for {
-		if utils.FilterEmail(LoginName) {
-			if userInfo, err = models.GetAUserByEmail(LoginName); nil == err {
-				break
-			}
-		} else if utils.FilterPhonenumber(LoginName) {
-			if userInfo, err = models.GetAUserByPhoneNumber(LoginName); nil == err {
-				break
-			}
-		} else {
+	// for {
+	if utils.FilterEmail(LoginName) {
+		if userInfo, err = models.GetAUserByEmail(LoginName); nil != err {
+			// break
 			c.JSON(http.StatusUnauthorized, gin.H{
-				"status": "请确认输入的账户名是否为Email/Phone",
+				"status": "该用户未注册",
 			})
-
 			c.Redirect(http.StatusMovedPermanently, "/")
-
 			return
 		}
+	} else if utils.FilterPhonenumber(LoginName) {
+		if userInfo, err = models.GetAUserByPhoneNumber(LoginName); nil != err {
+			// break
+			c.JSON(http.StatusUnauthorized, gin.H{
+				"status": "该用户未注册",
+			})
+			c.Redirect(http.StatusMovedPermanently, "/")
+			return
+		}
+	} else {
+		c.JSON(http.StatusUnauthorized, gin.H{
+			"status": "请确认输入的账户名是否为Email/Phone",
+		})
 
+		c.Redirect(http.StatusMovedPermanently, "/")
+
+		return
 	}
+
+	// }
 
 	if userInfo.Password == LoginPassword {
 
