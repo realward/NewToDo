@@ -19,7 +19,7 @@ func main(){
 
 	file := "./config/config.ini"
 
-	if err := setting.SettingInit(file); err != nil {
+	if err := setting.SettingInit(file); err != nil {  //载入配置文件
 
 		fmt.Printf("config init failed, err : %v\n", err)
 
@@ -27,7 +27,7 @@ func main(){
 
 	}
 
-	if err := dao.InitMySQL(setting.Conf.MySQLConfig); err != nil {
+	if err := dao.InitMySQL(setting.Conf.MySQLConfig); err != nil { //初始化数据库
 		
 		fmt.Printf("mysql init failed, err : %v\n", err)
 		
@@ -39,11 +39,11 @@ func main(){
 	defer dao.Close()
 
 	// 模型绑定dao.DB.AutoMigrate(&models.Todo{})
-	dao.DB.AutoMigrate(&models.User{},&models.Todo{},)
+	dao.DB.AutoMigrate(&models.User{},&models.Todo{},)//数据结构映射到数据库
 	
-	r := routers.RoutersInit()
+	r := routers.RoutersInit()//初始化路由
 
-	routers.SetRouters(r)
+	routers.SetRouters(r) //设置路由 
 
 	if err := r.Run(fmt.Sprintf(":%d", setting.Conf.Port)); err != nil {
 

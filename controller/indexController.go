@@ -14,7 +14,7 @@ import (
 
 func Index(c *gin.Context){
 
-	session := sessions.Default(c)
+	session := sessions.Default(c) //初始化session
 
 	userInfo := session.Get("userinfo").(string)
 
